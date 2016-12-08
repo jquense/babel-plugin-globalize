@@ -21,7 +21,7 @@ export default function compile({ patterns, messages, locale, compilerOptions })
   if (!files.length) return
 
   let extracts = files.map(filepath => require(filepath)); // eslint-disable-line
-
+  
   return compileExtracts({
     ...compilerOptions,
     extracts,

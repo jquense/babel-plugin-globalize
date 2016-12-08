@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { readFileSync, writeFileSync, statSync } from 'fs';
 import path from 'path';
 
@@ -10,46 +12,63 @@ import compile from '../compile';
 
 let { _,
   output,
+  locale,
   messages,
-  locale = 'en',
   ...compilerOptions
 } = yargs
   .usage('Usage $0 <source> [args]')
   .option('output', { alias: 'o', string: true })
-  .option('locale', { alias: 'l', string: true })
+  .option('locale', { alias: 'l', string: true, array: true })
   .option('messages', { alias: 'm', string: true })
   .argv;
 
-function toPatterns(files) {
-  return files.map((file) => {
-    let pattern = path.join(process.cwd(), file);
-    const stat = statSync(pattern);
-    if (!stat || stat.isDirectory()) {
-      pattern = path.join(pattern, './**/*.js');
-    }
-    return pattern;
-  });
-}
+messages = messages ? JSON.parse(readFileSync(messages)) : null;
 
-const bundle = compile({
-  locale,
-  compilerOptions,
-  patterns: toPatterns(_),
-  messages: messages ? JSON.parse(readFileSync(messages)) : null,
+let patterns = _.map((file) => {
+  let pattern = path.join(process.cwd(), file);
+  const stat = statSync(pattern);
+  if (!stat || stat.isDirectory()) {
+    pattern = path.join(pattern, './**/*.js');
+  }
+  return pattern;
 });
 
-if (bundle) {
-  output = path.isAbsolute(output)
-    ? output : path.join(process.cwd(), output)
-
-  mkdirp(path.dirname(output));
-
-  writeFileSync(
-    output,
-    bundle,
-    'utf8'
-  );
-  console.log(green('All done'));
-} else {
-  console.log(red('No files matching the provided pattern'));
+if (messages && !locale) {
+  locale = Object.keys(messages);
 }
+else if (!locale) {
+  locale = 'en'
+}
+
+[].concat(locale).forEach(locale => {
+  const bundle = compile({
+    locale,
+    compilerOptions,
+    patterns,
+    messages,
+  });
+
+  if (bundle) {
+    let name = path.basename(output, path.extname(output))
+
+    let localOutput = path.join(
+      path.dirname(output),
+      name + '.' + locale + path.extname(output)
+    )
+
+    localOutput = path.isAbsolute(localOutput)
+      ? localOutput : path.join(process.cwd(), localOutput)
+
+    mkdirp(path.dirname(localOutput));
+
+    writeFileSync(
+      localOutput,
+      bundle,
+      'utf8'
+    );
+    console.log(green(`Writing locale file: ${localOutput}`));
+  } else {
+    console.log(red('No files matching the provided pattern'));
+  }
+
+})
