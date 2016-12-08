@@ -1,11 +1,14 @@
 {
   "name": "babel-plugin-globalize",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Extract Globalize.js references to be compiled",
   "main": "lib/plugin.js",
   "bin": {
     "globalize-compile": "lib/bin/compile.js"
   },
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "lint": "eslint src",
     "test": "node test/index.js",
