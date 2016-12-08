@@ -1,0 +1,42 @@
+{
+  "name": "babel-plugin-globalize",
+  "version": "0.0.0",
+  "description": "Extract Globalize.js references to be compiled",
+  "main": "lib/plugin.js",
+  "bin": {
+    "globalize-compile": "lib/bin/compile.js"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "test": "node test/index.js",
+    "test-bin": "npm run build && node lib/bin/compile.js test/output/test -o test/output/foo.js -m test/fixtures/messages.json",
+    "build": "babel src --out-dir lib"
+  },
+  "author": "Jason Quense",
+  "license": "MIT",
+  "peerDependencies": {
+    "globalize": "^1.0.0",
+    "cldr-data": ">=25"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-preset-jason": "^2.0.1",
+    "babel-register": "^6.18.0",
+    "cldr-data": "^30.0.1",
+    "eslint": "^3.11.1",
+    "eslint-config-jason": "^4.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "globalize": "^1.1.2",
+    "mkdirp": "^0.5.1"
+  },
+  "dependencies": {
+    "babel-generator": "^6.19.0",
+    "babel-types": "^6.19.0",
+    "chalk": "^1.1.3",
+    "fn-name": "^2.0.1",
+    "glob": "^7.1.1",
+    "globalize-compiler": "^0.2.0",
+    "yargs": "^6.5.0"
+  }
+}
