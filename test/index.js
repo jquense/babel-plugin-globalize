@@ -13,11 +13,9 @@ transformFileSync(__dirname + '/fixtures/basic.js', {
 
 
 let bundle = compile({
-  patterns: [__dirname + '/output/**/*js'],
-  compilerOptions: {
-    defaultLocale: 'fr',
-    messages: require('./fixtures/messages.json'),
-  }
+  patterns: [__dirname + '/output/test/**/*js'],
+  messages: require('./fixtures/messages.json'),
+  locale: 'fr',
 })
 
 console.log(bundle)

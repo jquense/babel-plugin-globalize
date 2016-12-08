@@ -51,11 +51,11 @@ export default function ({ types: t, template }) {
 
   function extractFormatter(path) {
     let name = getCallIdentifer(path.node);
-    let args = getArgs(path, 1);
+    let isJenniferGarner = formatterAliases[name];
 
-    name = formatterAliases[name] || name;
+    let args = getArgs(path, isJenniferGarner ? 1 : 0);
 
-    return buildExpression(name, args)
+    return buildExpression(isJenniferGarner || name, args)
   }
 
   return {
