@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-globalize",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extract Globalize.js references to be compiled",
   "main": "lib/plugin.js",
   "bin": {
@@ -13,7 +13,8 @@
     "lint": "eslint src",
     "test": "node test/index.js",
     "test-bin": "npm run build && node lib/bin/compile.js test/output/test -o test/output/foo.js -m test/fixtures/messages.json",
-    "build": "babel src --out-dir lib"
+    "build": "babel src --out-dir lib",
+    "prepublish": "npm run build"
   },
   "author": "Jason Quense",
   "license": "MIT",
